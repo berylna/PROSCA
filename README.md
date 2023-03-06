@@ -8,16 +8,16 @@ This is the README document for PROSCA, an online platform for humanized scaffol
 * USAGE COMMANDS  
 * RESULTS  
 
-**(1)GET STARTED**  
-PROSCA doesn't require any compilation. The input file, "ALFOLDalign" or "PDBalign" file, "AlphaFold_library" folder, as well as the "PDB_library" folder should be placed in the same shell's search PATH directory.Access rights of "ALFOLDalign" or "PDBalign" file may also need to be changed to make them executable.  
+**(1) GET STARTED**  
+PROSCA doesn't require any compilation. The input file, "AFalign" or "PDBalign" file, "AlphaFold_library" folder, as well as the "PDB_library" folder should be placed in the same shell's search PATH directory.Access rights of "AFalign" or "PDBalign" file may also need to be changed to make them executable.  
 The latest version of TM-align (available from the Zhang lab at https://zhanggroup.org/TM-align/) need to be installed in the same PATH directory. "AlignedStructures1" folder and "AlignedStructures2" folder are created before runing PROSCA to save the results of 3D structures.   
 It is noticed that "PDB_Supplement" file should be placed in the above PATH when running PDBalign script.  
 
-**(2)USAGE COMMANDS**  
-To aligh the input protein with AlphaFold structures: ./AlFoldalign <input_file>  
-To aligh the input protein with AlphaFold structures: ./PDBalign <input_file>  
+**(2) USAGE COMMANDS**  
+To aligh the input protein with AlphaFold structures: ./AFalign <input_file>  
+To aligh the input protein with PDB structures: ./PDBalign <input_file>  
 
-**(3)RESULTS**  
+**(3) RESULTS**  
 After processing the input file, PROSCA will generate a file "AlignedResults" and many structure files of target proteins.The "AlignedStructures1" folder stores various structures such as the superposed full-atom structures of two proteins and discontinuous strucures of human proteins. The "AlignedStructures2" folder stores the complete structures of aligned human proteins.  
 
 
