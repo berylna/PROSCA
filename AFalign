@@ -1,0 +1,73 @@
+#!/bin/bash
+
+#Usage: ./AlFOLDalign <input file>
+
+INPUT_FILE=$1
+VarName_INPUT=${INPUT_FILE%.*}
+
+echo "Input Protein Name|Input Protein Sequence|Input Protein Sequence Length|Human Protein Name|Human Aligned Sequence|Huamn Aligned Sequence length|Coverage|Human Full-length Protein Sequence|Human Full-length Protein Length|UNIPROT|TM-score|Aligned Input Residues|Aligned Human Residues" > ./AlignedResults.cvs
+
+mkdir ./TMscoreResults
+
+for HUMAN_FILE in $( ls ./AlphaFold_library )
+do
+	VarName=${HUMAN_FILE%.*}
+	./TMalign ${INPUT_FILE} ./AlphaFold_library/${HUMAN_FILE} > ./TMscoreResults/$VarName
+	./TMalign ${INPUT_FILE} ./AlphaFold_library/${HUMAN_FILE} -o ./AlignedStructures1/$VarName.sup
+        
+	PROTEIN_NAME=$VarName    
+	TM_SCORE=$( cat ./TMscoreResults/$VarName | sed -n '18p' | grep -E -o "[01]\.[0-9]+" )               
+	InputProteinLength=$( cat ./TMscoreResults/$VarName | sed -n '14p' | sed 's/Length of Chain_1:  //g' )   
+
+	if [ `echo "${TM_SCORE} >= 0.5" |bc` -eq 1 ]                                                                       
+	then
+		
+################################### Human Protein Fragment #################################################
+
+		Input_Sequence01=$( sed -n '23p' ./TMscoreResults/$VarName )
+		Input_Sequence02=$( echo ${Input_Sequence01} | awk '{gsub(/[A-Z]/, ".");print$0}' )
+		DelLeftAA01=${Input_Sequence02#*.}
+		DelLeftAA02=$( echo $DelLeftAA01 | wc -m )
+		DelRightAA01=${Input_Sequence02%.*}
+		DelRightAA02=$(echo $DelRightAA01 | wc -m )
+
+		AlignedAA=$( sed -n '23p' ./TMscoreResults/$VarName | wc -m )
+		FirstAA=$[ $AlignedAA - $DelLeftAA02 ]
+		LastAA=$[ $DelRightAA02 + 1 ]
+		Fist_Last=$[ $LastAA - $FirstAA ]
+
+		Output_Sequence01=$( sed -n '25p' ./TMscoreResults/$VarName )
+		FirstAA02=$[$FirstAA - 1 ]
+		HumanFragment01=${Output_Sequence01:$FirstAA02:${Fist_Last}}
+		HumanFragment02=$( echo $HumanFragment01 | awk '{gsub(/-/,"");print$0}' )           
+		HumanSequence03=$( echo ${Output_Sequence01} | awk '{gsub(/-/,"");print$0}' )       
+		
+		InputFragment01=${Input_Sequence01:$FirstAA02:${Fist_Last}}         
+		InputFragment02=$( echo $InputFragment01 | awk '{gsub(/-/,"");print$0}' )
+				
+		Fist_Last_Sequence=$( echo $HumanSequence03 | wc -m )    
+		Fist_Last_Fragment00=$( echo $HumanFragment02 | wc -m )	   
+		Fist_Last_Fragment=$[ ${Fist_Last_Fragment00}-1 ]
+		Fist_Last_Sequence01=$[ ${Fist_Last_Sequence}-1 ]
+		UNIPROT=$( echo $VarName | sed 's/^AF-//g' | sed 's/-F[0-9]*-model_v1//g' )
+		AlignedAA01=$( cat ./TMscoreResults/$VarName | sed -n '24p' | sed 's/ //g' | wc -m )
+		AlignedAA02=$[ $AlignedAA01 - 1 ]
+		Coverage=$( echo | awk "{print $AlignedAA02/$InputProteinLength*100}" )
+		
+########### Aligned Human Protein Structures ###########################################
+
+		FirstAA_Structure01=$( awk 'BEGIN{print index("'$HumanSequence03'", "'$HumanFragment02'")}' )  
+		LastAA_Structure01=$[ ${FirstAA_Structure01} + ${Fist_Last_Fragment} -1 ]
+
+		echo "$VarName|$InputFragment02|$InputProteinLength|${PROTEIN_NAME}|$HumanFragment02|${Fist_Last_Fragment} residues|$Coverage|$HumanSequence03|${Fist_Last_Sequence01} residues|$UNIPROT|$TM_SCORE|$InputFragment01|$HumanFragment01" >> ./AlignedResults.cvs
+		
+		for ((i=${FirstAA_Structure01}; i<=${LastAA_Structure01}; i++))
+		do
+       		 cat ./AlphaFold_library/${HUMAN_FILE} | grep -E "^ATOM[ ]+[0-9]+[ ]+[A-Z0-9]+[ ]+[A-Z]+ [A-Z][ ]{1,4}$i[ ]+" >> ./AlignedStructures2/${HUMAN_FILE}  
+		done
+			
+	fi
+	
+done
+
+rm -r ./TMscoreResults
