@@ -4,7 +4,7 @@
 
 INPUT_FILE=$1
 VarName_INPUT=${INPUT_FILE%.*}
-echo "Input Protein Name|Input Protein Sequence|Input Protein Sequence Length|Human Protein Name|Human Aligned Sequence|Huamn Aligned Sequence length|Coverage|Human Full-length Protein Sequence|Human Full-length Protein Length|UNIPROT|TM-score|Aligned Input Residues|Aligned Human Residues|PDBID" > ./AlignedResults
+echo "Input Protein Name|Input Protein Sequence|Input Protein Sequence Length|Human Protein Name|Human Aligned Sequence|Huamn Aligned Sequence length|Coverage|Human Full-length Protein Sequence|Human Full-length Protein Length|UNIPROT|TM-score|Aligned Input Residues|Aligned Human Residues|PDBID" > ./AlignedResults.cvs
 
 mkdir ./TMscoreResults
 
@@ -62,7 +62,7 @@ do
 		then
 			PROTEIN_NAME=$( echo $PROTEIN_NAME01 | awk -F"|" '{printf $2}' | uniq )
 			UNIPROT=$( echo $PROTEIN_NAME01 | awk -F"|" '{printf $4}' | uniq )
-			echo "${VarName_INPUT}|$InputFragment02|$InputProteinLength|${PROTEIN_NAME}|$HumanFragment02|${Fist_Last_Fragment} residues|$Coverage|$HumanSequence03|${Fist_Last_Sequence01} residues|$UNIPROT|$TM_SCORE|$InputFragment01|$HumanFragment01|$VarName" >> ./AlignedResults
+			echo "${VarName_INPUT}|$InputFragment02|$InputProteinLength|${PROTEIN_NAME}|$HumanFragment02|${Fist_Last_Fragment} residues|$Coverage|$HumanSequence03|${Fist_Last_Sequence01} residues|$UNIPROT|$TM_SCORE|$InputFragment01|$HumanFragment01|$VarName" >> ./AlignedResults.cvs
 		fi
 		
 ################################### Aligned Human Protein Structures ####################################################
