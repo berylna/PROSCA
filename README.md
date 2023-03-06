@@ -22,7 +22,7 @@ After processing the input file, PROSCA will generate a file "AlignedResults" an
 
 
 **Availability**  
-PROSCA is freely available at http://prosca.idrblab.cn/ and does not have a login requirement. The code for PROSCA is open source and available in the GitHub repository (https://github.com/).  
+PROSCA is freely available at http://prosca.idrblab.cn/ and does not have a login requirement. The code for PROSCA is open source and available in the GitHub repository (https://github.com/berylna/PROSCA/).  
 
 **Suggestions**  
 If you have any feedback, please contact us at wangxn@cqu.edu.cn or zhangyintao@zju.edu.cn. If you are reporting a bug, please include the full error message recieved when running PROSCA.  
