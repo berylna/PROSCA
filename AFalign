@@ -53,14 +53,16 @@ do
 		AlignedAA01=$( cat ./TMscoreResults/$VarName | sed -n '24p' | sed 's/ //g' | wc -m )
 		AlignedAA02=$[ $AlignedAA01 - 1 ]
 		Coverage=$( echo | awk "{print $AlignedAA02/$InputProteinLength*100}" )
-		
-########### Aligned Human Protein Structures ###########################################
 
 		FirstAA_Structure01=$( awk 'BEGIN{print index("'$HumanSequence03'", "'$HumanFragment02'")}' )  
 		LastAA_Structure01=$[ ${FirstAA_Structure01} + ${Fist_Last_Fragment} -1 ]
+		
+####################################### AlignedResults #####################################################
 
 		echo "$VarName|$InputFragment02|$InputProteinLength|${PROTEIN_NAME}|$HumanFragment02|${Fist_Last_Fragment} residues|$Coverage|$HumanSequence03|${Fist_Last_Sequence01} residues|$UNIPROT|$TM_SCORE|$InputFragment01|$HumanFragment01" >> ./AlignedResults.cvs
-		
+
+################################ Aligned Human Protein Structures ###########################################
+
 		for ((i=${FirstAA_Structure01}; i<=${LastAA_Structure01}; i++))
 		do
        		 cat ./AlphaFold_library/${HUMAN_FILE} | grep -E "^ATOM[ ]+[0-9]+[ ]+[A-Z0-9]+[ ]+[A-Z]+ [A-Z][ ]{1,4}$i[ ]+" >> ./AlignedStructures2/${HUMAN_FILE}  
