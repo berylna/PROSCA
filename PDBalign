@@ -58,6 +58,8 @@ do
 		FirstAA_Structure01=$( awk 'BEGIN{print index("'$HumanSequence03'", "'$HumanFragment02'")}' )  
 		LastAA_Structure01=$[ ${FirstAA_Structure01} + ${Fist_Last_Fragment} -1 ]
 
+########################################### AlignedResults ##############################################################
+
 		if [[ $PROTEIN_NAME01 != "" ]]
 		then
 			PROTEIN_NAME=$( echo $PROTEIN_NAME01 | awk -F"|" '{printf $2}' | uniq )
