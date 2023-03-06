@@ -59,7 +59,7 @@ do
 		FirstAA_Structure01=$( awk 'BEGIN{print index("'$HumanSequence03'", "'$HumanFragment02'")}' )  
 		LastAA_Structure01=$[ ${FirstAA_Structure01} + ${Fist_Last_Fragment} -1 ]
 
-		echo "$VarName|$InputFragment02|$InputProteinLength|${PROTEIN_NAME}|$HumanFragment02|${Fist_Last_Fragment} residues|$Coverage|$HumanSequence03|${Fist_Last_Sequence01} residues|$UNIPROT|$TM_SCORE|$InputFragment01|$HumanFragment01" >> ./AlignedResults
+		echo "$VarName|$InputFragment02|$InputProteinLength|${PROTEIN_NAME}|$HumanFragment02|${Fist_Last_Fragment} residues|$Coverage|$HumanSequence03|${Fist_Last_Sequence01} residues|$UNIPROT|$TM_SCORE|$InputFragment01|$HumanFragment01" >> ./AlignedResults.cvs
 		
 		for ((i=${FirstAA_Structure01}; i<=${LastAA_Structure01}; i++))
 		do
